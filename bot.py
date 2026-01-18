@@ -46,7 +46,7 @@ async def start(message: Message):
         
         reply_markup=menu.main_menu()
     )
-    print(message.from_user.id)
+    await message.answer(message.from_user.id)
 
 @dp.callback_query(F.data == '/settings')
 async def settings(callback: CallbackQuery):
