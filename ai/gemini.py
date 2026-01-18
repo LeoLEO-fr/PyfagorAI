@@ -38,6 +38,8 @@ def get_chat(user_id: int, mode: str):
         ]
         user_chats[user_id] = client.chats.create(history=history, model=MODEL)
 
+    #if user_id not in user_chats and user_id == 
+
     return user_chats[user_id]
 
 
