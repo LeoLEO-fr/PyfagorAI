@@ -226,6 +226,7 @@ async def run_web_server():
 async def main():
     await set_bot_commands(bot)
     await run_web_server()
+    await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)
 
 
