@@ -2,6 +2,7 @@ from google.genai.errors import ClientError
 from aiogram import Bot, Dispatcher, F
 from aiogram.types import Message, CallbackQuery, BotCommand
 from aiogram.filters import CommandStart, Command
+from aiohttp import web
 import keyboards.menu as menu
 import ai.gemini as g
 import asyncio
@@ -9,13 +10,14 @@ import os
 
 from ai.gemini import gemini_image_chat
 
-BOT_TOKEN = os.getenv("BOT_TOKEN")
+from config import BOT_TOKEN, PORT
 
 bot = Bot(BOT_TOKEN)
 dp = Dispatcher()
 
 
 user_settings = {}
+
 
 def get_settings(user_id: int):
     if user_id not in user_settings:
@@ -52,10 +54,6 @@ async def settings(callback: CallbackQuery):
     await callback.message.answer(
         '''Настройки бота⚙️''',
         reply_markup=menu.settings_menu())
-
-        
-
-
 
 
 @dp.message(Command("reset"))
@@ -116,7 +114,6 @@ async def handle_photo(message: Message):
             await message.answer("Неполадки с сервером, попробуй через 10-15 минут⏳")
         else:
             await message.answer("❌ Ошибка при обработке запроса.")
-
 
 
 @dp.message(F.text)
@@ -212,10 +209,23 @@ async def handle_text(message: Message):
 #             reply_markup=menu.repeat()
 #         )
 
+async def healthcheck(request):
+    return web.Response(text="Bot is alive")
+
+
+async def run_web_server():
+    app = web.Application()
+    app.router.add_get("/", healthcheck)
+    port = int(PORT)
+    runner = web.AppRunner(app)
+    await runner.setup()
+    site = web.TCPSite(runner, "0.0.0.0", port)
+    await site.start()
 
 
 async def main():
     await set_bot_commands(bot)
+    await run_web_server()
     await dp.start_polling(bot)
 
 
