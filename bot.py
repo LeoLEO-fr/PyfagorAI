@@ -46,7 +46,7 @@ async def start(message: Message):
         
         reply_markup=menu.main_menu()
     )
-    await message.answer(message.from_user.id)
+
 
 @dp.callback_query(F.data == '/settings')
 async def settings(callback: CallbackQuery):
@@ -73,6 +73,7 @@ async def reset_callback(callback: CallbackQuery):
 async def handle_photo(message: Message):
     user_id = message.from_user.id
     mode = get_settings(user_id)["mode"]
+    print(user_id)
     # Инициализация контекста
     if user_id not in user_context:
         user_context[user_id] = []
