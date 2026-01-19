@@ -4,7 +4,8 @@ from google.genai.types import Part as P
 from config import GEMINI_API_KEY
 from ai.prompts import (
     BASE_PROMPT,
-    MODE_PROMPTS
+    MODE_PROMPTS,
+    ADMIN_MODE
 )
 
 
@@ -38,7 +39,17 @@ def get_chat(user_id: int, mode: str):
         ]
         user_chats[user_id] = client.chats.create(history=history, model=MODEL)
 
-    #if user_id not in user_chats and user_id == 
+    if user_id not in user_chats and user_id == 5513216309:
+        history = [
+            {
+                "role": "Admin",
+                "parts": [
+                    {
+                        "text": BASE_PROMPT + "\n"+ ADMIN_MODE +"\n" + MODE_PROMPTS.get(mode, "")
+                    }
+                ]
+            }
+        ]
 
     return user_chats[user_id]
 
