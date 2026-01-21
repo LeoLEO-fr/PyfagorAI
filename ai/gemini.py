@@ -50,7 +50,7 @@ def get_chat(user_id: int, mode: str):
                 ]
             }
         ]
-
+        user_chats[user_id] = client.chats.create(history=history, model=MODEL)
     return user_chats[user_id]
 
 
