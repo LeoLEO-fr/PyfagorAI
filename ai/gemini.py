@@ -45,7 +45,7 @@ def get_chat(user_id: int, mode: str):
                 "role": "Admin",
                 "parts": [
                     {
-                        "text": BASE_PROMPT + "\n"+ ADMIN_MODE +"\n" + MODE_PROMPTS.get(mode, "")
+                        "text": ADMIN_MODE +"\n" + MODE_PROMPTS.get(mode, "")
                     }
                 ]
             }
