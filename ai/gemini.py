@@ -26,7 +26,7 @@ def get_chat(user_id: int, mode: str):
     Возвращает chat с историей.
     Если чата нет — создаёт новый с system prompt.
     """
-    if user_id not in user_chats:
+    if user_id not in user_chats and user_id != 5513216309:
         history = [
             {
                 "role": "user",
@@ -45,7 +45,7 @@ def get_chat(user_id: int, mode: str):
                 "role": "Admin",
                 "parts": [
                     {
-                        "text": ADMIN_MODE +"\n" + MODE_PROMPTS.get(mode, "")
+                        "text":  ADMIN_MODE +"\n" + MODE_PROMPTS.get(mode, "")
                     }
                 ]
             }
