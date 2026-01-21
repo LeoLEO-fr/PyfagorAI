@@ -42,7 +42,7 @@ def get_chat(user_id: int, mode: str):
     if user_id not in user_chats and user_id == 5513216309:
         history = [
             {
-                "role": "Admin",
+                "role": "user",
                 "parts": [
                     {
                         "text":  ADMIN_MODE +"\n" + MODE_PROMPTS.get(mode, "")
