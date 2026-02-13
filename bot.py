@@ -19,6 +19,11 @@ dp = Dispatcher()
 user_settings = {}
 
 
+def get_settings(user_id: int):
+    if user_id not in user_settings:
+        user_settings[user_id] = {"mode": "tutor"}
+
+
 async def set_bot_commands(bot: Bot):
     commands = [
         BotCommand(command="/menu", description="Главное меню"),
@@ -74,7 +79,7 @@ async def settings(callback: CallbackQuery):
 async def settings(callback: CallbackQuery):
     g.user_chats[callback.from_user.id] = []
     await callback.answer(
-        "Выбран режим - учитель⚙️",
+        "Выбран режим - олимпиадник⚙️",
         reply_markup=g.get_chat(callback.from_user.id, "olymp"))
     user_settings.clear()
     user_settings[callback.from_user.id] = {"mode": "olymp"}
@@ -143,7 +148,7 @@ async def handle_photo(message: Message):
 @dp.message(F.text)
 async def handle_text(message: Message):
     user_id = message.from_user.id
-    mode = user_settings[user_id]
+    mode = user_settings
     if user_id not in user_context:
         user_context[user_id] = []
 
