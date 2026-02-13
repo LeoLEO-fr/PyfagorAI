@@ -19,7 +19,7 @@ dp = Dispatcher()
 user_settings = {}
 
 
-def get_settings(user_id: int, mode: str):
+def get_settings(user_id: int,):
     if user_id not in user_settings:
         user_settings[user_id] = {"mode": "tutor"}
 
