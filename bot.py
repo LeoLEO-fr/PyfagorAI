@@ -19,9 +19,11 @@ dp = Dispatcher()
 user_settings = {}
 
 
-def get_settings(user_id: int):
+def get_settings(user_id: int, mode: str):
     if user_id not in user_settings:
         user_settings[user_id] = {"mode": "tutor"}
+    else:
+        user_settings[user_id] = {"mode": mode}
     return user_settings[user_id]
 
 
@@ -56,6 +58,27 @@ async def settings(callback: CallbackQuery):
         reply_markup=menu.settings_menu())
 
 
+@dp.callback_query(F.data == '/mode_tutor')
+async def settings(callback: CallbackQuery):
+    await callback.answer(
+        "Выбран режим - репетитор⚙️",
+        reply_markup=get_settings(user_id=CallbackQuery.from_user.id, mode="tutor"))
+
+
+@dp.callback_query(F.data == '/mode_teacher')
+async def settings(callback: CallbackQuery):
+    await callback.answer(
+        "Выбран режим - учитель⚙️",
+        reply_markup=get_settings(user_id=CallbackQuery.from_user.id, mode="teacher"))
+
+
+@dp.callback_query(F.data == '/mode_olymp')
+async def settings(callback: CallbackQuery):
+    await callback.answer(
+        "Выбран режим - учитель⚙️",
+        reply_markup=get_settings(user_id=CallbackQuery.from_user.id, mode="olymp"))
+
+
 @dp.message(Command("reset"))
 async def reset_command(message: Message):
     user_context[message.from_user.id] = []
@@ -80,7 +103,7 @@ async def handle_photo(message: Message):
     photo = message.photo[-1]  # самое качественное фото
     file = await bot.get_file(photo.file_id)
 
-    # 🔥 ВАЖНО: скачиваем через Telegram API
+    #Cкачиваем через Telegram API
     image_bytes = await bot.download(file)
 
     # Gemini
