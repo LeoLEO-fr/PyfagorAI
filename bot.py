@@ -19,14 +19,6 @@ dp = Dispatcher()
 user_settings = {}
 
 
-def get_settings(user_id: int, mode: str):
-    if user_id not in user_settings:
-        user_settings[user_id] = {"mode": "tutor"}
-    else:
-        user_settings[user_id] = {"mode": mode}
-    return user_settings[user_id]
-
-
 async def set_bot_commands(bot: Bot):
     commands = [
         BotCommand(command="/menu", description="Главное меню"),
@@ -64,6 +56,8 @@ async def settings(callback: CallbackQuery):
     await callback.answer(
         "Выбран режим - репетитор⚙️",
         reply_markup=g.get_chat(callback.from_user.id, "tutor"))
+    user_settings.clear()
+    user_settings[callback.from_user.id] = {"mode": "tutor"}
 
 
 @dp.callback_query(F.data == '/mode_teacher')
@@ -72,6 +66,8 @@ async def settings(callback: CallbackQuery):
     await callback.answer(
         "Выбран режим - учитель⚙️",
         reply_markup=g.get_chat(callback.from_user.id, "teacher"))
+    user_settings.clear()
+    user_settings[callback.from_user.id] = {"mode": "teacher"}
 
 
 @dp.callback_query(F.data == '/mode_olymp')
@@ -80,6 +76,8 @@ async def settings(callback: CallbackQuery):
     await callback.answer(
         "Выбран режим - учитель⚙️",
         reply_markup=g.get_chat(callback.from_user.id, "olymp"))
+    user_settings.clear()
+    user_settings[callback.from_user.id] = {"mode": "olymp"}
 
 
 @dp.message(Command("reset"))
@@ -98,7 +96,7 @@ async def reset_callback(callback: CallbackQuery):
 @dp.message(F.photo)
 async def handle_photo(message: Message):
     user_id = message.from_user.id
-    mode = g.get_chat(user_id)[mode]
+    mode = user_settings[user_id]
     # Инициализация контекста
     if user_id not in user_context:
         user_context[user_id] = []
@@ -145,7 +143,7 @@ async def handle_photo(message: Message):
 @dp.message(F.text)
 async def handle_text(message: Message):
     user_id = message.from_user.id
-    mode = g.get_chat(user_id)[mode]
+    mode = user_settings[user_id]
     if user_id not in user_context:
         user_context[user_id] = []
 
