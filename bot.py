@@ -60,23 +60,26 @@ async def settings(callback: CallbackQuery):
 
 @dp.callback_query(F.data == '/mode_tutor')
 async def settings(callback: CallbackQuery):
+    g.user_chats[callback.from_user.id] = []
     await callback.answer(
         "Выбран режим - репетитор⚙️",
-        reply_markup=get_settings(user_id=CallbackQuery.from_user.id, mode="tutor"))
+        reply_markup=g.get_chat(callback.from_user.id, "tutor"))
 
 
 @dp.callback_query(F.data == '/mode_teacher')
 async def settings(callback: CallbackQuery):
+    g.user_chats[callback.from_user.id] = []
     await callback.answer(
         "Выбран режим - учитель⚙️",
-        reply_markup=get_settings(user_id=CallbackQuery.from_user.id, mode="teacher"))
+        reply_markup=g.get_chat(callback.from_user.id, "teacher"))
 
 
 @dp.callback_query(F.data == '/mode_olymp')
 async def settings(callback: CallbackQuery):
+    g.user_chats[callback.from_user.id] = []
     await callback.answer(
         "Выбран режим - учитель⚙️",
-        reply_markup=get_settings(user_id=CallbackQuery.from_user.id, mode="olymp"))
+        reply_markup=g.get_chat(callback.from_user.id, "olymp"))
 
 
 @dp.message(Command("reset"))
@@ -95,7 +98,7 @@ async def reset_callback(callback: CallbackQuery):
 @dp.message(F.photo)
 async def handle_photo(message: Message):
     user_id = message.from_user.id
-    mode = get_settings(user_id)["mode"]
+    mode = g.get_chat(user_id)[mode]
     # Инициализация контекста
     if user_id not in user_context:
         user_context[user_id] = []
@@ -142,7 +145,7 @@ async def handle_photo(message: Message):
 @dp.message(F.text)
 async def handle_text(message: Message):
     user_id = message.from_user.id
-    mode = get_settings(user_id)["mode"]
+    mode = g.get_chat(user_id)[mode]
     if user_id not in user_context:
         user_context[user_id] = []
 
