@@ -101,7 +101,7 @@ async def reset_callback(callback: CallbackQuery):
 @dp.message(F.photo)
 async def handle_photo(message: Message):
     user_id = message.from_user.id
-    mode = user_settings[user_id]
+    mode = user_settings[user_id]["mode"]
     # Инициализация контекста
     if user_id not in user_context:
         user_context[user_id] = []
@@ -148,7 +148,7 @@ async def handle_photo(message: Message):
 @dp.message(F.text)
 async def handle_text(message: Message):
     user_id = message.from_user.id
-    mode = user_settings
+    mode = user_settings[user_id]["mode"]
     if user_id not in user_context:
         user_context[user_id] = []
 
