@@ -82,15 +82,15 @@ async def gemini_image_chat(user_id, mode,user_context, image_bytes, prompt) -> 
         texts.append(msg["text"])
 
     texts.append(prompt)
-    final_text = "\n".join(texts)
-
+    final_text_yet = "\n".join(texts)
+    final_txt = final_text_yet[7:-4]
 
     if image_bytes:
         response = chat.send_message([
             P.from_bytes(data=image_bytes, mime_type="image/jpeg"),
-            final_text
+            final_text_yet
         ])
     else:
-        response = chat.send_message(final_text)
+        response = chat.send_message(final_txt)
 
     return response.text.strip()
