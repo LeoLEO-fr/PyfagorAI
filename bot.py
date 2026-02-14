@@ -29,7 +29,7 @@ def get_settings(user_id: int,):
 async def set_bot_commands(bot: Bot):
     commands = [
         BotCommand(command="/menu", description="Главное меню"),
-        BotCommand(command="/reset", description="Вся история Франциии удалить..."),
+
     ]
     await bot.set_my_commands(commands)
 
@@ -55,13 +55,6 @@ async def settings(callback: CallbackQuery):
     await callback.message.answer(
         '''Настройки бота⚙️''',
         reply_markup=menu.settings_menu())
-
-
-@dp.message(Command("reset"))
-async def reset_command(message: Message):
-    user_context[message.from_user.id] = []
-    g.user_chats.pop(message.from_user.id)
-    await message.answer("Чат самоуничтожился! Поздравляю!")
 
 
 @dp.callback_query(F.data == "/reset")
