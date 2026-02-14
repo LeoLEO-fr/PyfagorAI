@@ -167,56 +167,7 @@ async def handle_text(message: Message):
         else:
             await message.answer("❌ Ошибка при обработке запроса.")
 
-
-# @dp.callback_query(F.data == "repeat")
-# async def repeat_last_message(callback: CallbackQuery):
-#     await callback.answer("Штирлиц играл в карты и проигрался. Но Штирлиц умел делать хорошую мину при плохой игре. Когда Штирлиц покинул компанию, мина сработала.")
-
-#     user_id = callback.from_user.id
-#     mode = get_settings(user_id)["mode"]
-
-#     # Проверка контекста
-#     if user_id not in user_context or not user_context[user_id]:
-#         await callback.message.answer("❌ Нет сообщения для повтора.")
-#         return
-
-#     # Ищем последнее сообщение пользователя
-#     last_user_message = None
-#     for msg in reversed(user_context[user_id]):
-#         if msg["role"] == "user":
-#             last_user_message = msg["text"]
-#             break
-
-#     if not last_user_message:
-#         await callback.message.answer("❌ Не удалось найти последнее сообщение.")
-#         return
-
-#     msg = await callback.message.answer("🔁 Повторяю запрос...")
-
-#     try:
-#         answer = await gemini_image_chat(
-#             user_id=user_id,
-#             mode=mode,
-#             user_context=user_context[user_id],
-#             image_bytes=None,
-#             prompt=last_user_message
-#         )
-
-#         await msg.delete()
-#         await callback.message.answer(answer, parse_mode="HTML")
-
-#         # сохраняем ответ в контекст
-#         user_context[user_id].append({
-#             "role": "assistant",
-#             "text": answer
-#         })
-
-#     except Exception as e:
-#         await msg.delete()
-#         await callback.message.answer(
-#             "❌ Снова ошибка. Попробуй чуть позже.",
-#             reply_markup=menu.repeat()
-#         )
+            
 
 async def healthcheck(request):
     return web.Response(text="Bot is alive")
