@@ -128,7 +128,6 @@ async def handle_photo(message: Message):
 @dp.message(F.text)
 async def handle_text(message: Message):
     user_id = message.from_user.id
-    print(user_id)
     mode = get_settings(user_id)["mode"]
     if user_id not in user_context:
         user_context[user_id] = []

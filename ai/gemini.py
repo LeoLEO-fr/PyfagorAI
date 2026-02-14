@@ -1,3 +1,4 @@
+import os
 from google import genai
 from google.genai.chats import Chat
 from google.genai.types import Part as P
@@ -8,8 +9,8 @@ from ai.prompts import (
     ADMIN_MODE
 )
 
+id = os.getenv("id")
 
-# The client gets the API key from the environment variable `GEMINI_API_KEY`.
 client = genai.Client(api_key=GEMINI_API_KEY)
 MODEL = "gemma-3-27b-it"
 
@@ -26,7 +27,7 @@ def get_chat(user_id: int, mode: str):
     Возвращает chat с историей.
     Если чата нет — создаёт новый с system prompt.
     """
-    if user_id not in user_chats and user_id != 5513216309:
+    if user_id not in user_chats and user_id not in id:
         history = [
             {
                 "role": "user",
@@ -39,7 +40,7 @@ def get_chat(user_id: int, mode: str):
         ]
         user_chats[user_id] = client.chats.create(history=history, model=MODEL)
 
-    if user_id not in user_chats and user_id == 5513216309:
+    if user_id not in user_chats and user_id in id:
         history = [
             {
                 "role": "user",
