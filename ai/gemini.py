@@ -19,18 +19,12 @@ client = genai.Client(api_key=GEMINI_API_KEY)
 MODEL = "gemma-3-27b-it"
 
 
-# ---------------------------
-# ХРАНЕНИЕ КОНТЕКСТА
-# user_id -> chat
-# ---------------------------
+
 user_chats = {}
 
 
 def get_chat(user_id: int, mode: str):
-    """
-    Возвращает chat с историей.
-    Если чата нет — создаёт новый с system prompt.
-    """
+
     if user_id not in user_chats and user_id not in Admins_IDs :
         history = [
             {

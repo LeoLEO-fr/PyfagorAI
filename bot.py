@@ -89,10 +89,8 @@ async def handle_photo(message: Message):
     photo = message.photo[-1]  # самое качественное фото
     file = await bot.get_file(photo.file_id)
 
-    #Cкачиваем через Telegram API
     image_bytes = await bot.download(file)
 
-    # Gemini
     msg = await message.answer("🖼️ Обрабатываю запрос...")
 
     try:
