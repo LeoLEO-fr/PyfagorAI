@@ -64,10 +64,10 @@ async def settings(callback: CallbackQuery):
 @dp.callback_query(F.data == "/reset")
 async def reset_callback(callback: CallbackQuery):
     user_context[callback.from_user.id] = []
-    await callback.answer("Чат самоуничтожился! Поздравляю!")
+    await callback.message.answer("Чат самоуничтожился! Поздравляю!")
 
 
-@dp.callback_query(F.data == '/menu')
+@dp.callback_query(Command == 'menu')
 async def menu_return(callback: CallbackQuery):
     await callback.message.answer(
         "👋 Привет! И добро пожаловать в главное меню\n\n"
@@ -104,12 +104,14 @@ async def handle_photo(message: Message):
             prompt=message.text if isinstance(message.text,str) else ''
         )
 
+        await msg.delete()
+        await message.answer(answer, parse_mode="HTML")
+
         user_context[user_id].append({
             "role": "assistant",
             "text": answer if isinstance(answer,str) else ''
         })
-        await msg.delete()
-        await message.answer(answer, parse_mode="HTML")
+
 
     except ClientError as e:
         await msg.delete()
@@ -148,13 +150,15 @@ async def handle_text(message: Message):
             prompt=message.text
         )
 
+        await msg.delete()
+        await message.answer(answer, parse_mode="HTML")
+
         user_context[user_id].append({
             "role": "assistant",
             "text": answer
         })
 
-        await msg.delete()
-        await message.answer(answer, parse_mode="HTML")
+
 
     except ClientError as e:
         await msg.delete()
