@@ -1,7 +1,8 @@
 from google import genai
 from google.genai.chats import Chat
 from google.genai.types import Part as P
-from config import GEMINI_API_KEY, id
+from ids import id
+from config import GEMINI_API_KEY
 from ai.prompts import (
     BASE_PROMPT,
     MODE_PROMPTS,

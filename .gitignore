@@ -145,7 +145,7 @@ env.bak/
 venv.bak/
 
 #IDs
-.ids.py
+ids.py
 
 # Spyder project settings
 .spyderproject
