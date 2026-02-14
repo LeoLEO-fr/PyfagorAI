@@ -1,13 +1,17 @@
 from google import genai
 from google.genai.chats import Chat
 from google.genai.types import Part as P
-from ids import id
-from config import GEMINI_API_KEY
+from config import GEMINI_API_KEY, id, id1
 from ai.prompts import (
     BASE_PROMPT,
     MODE_PROMPTS,
     ADMIN_MODE
 )
+
+Admins_IDs = []
+
+Admins_IDs.append(str(id))
+Admins_IDs.append(str(id1))
 
 
 
@@ -27,7 +31,7 @@ def get_chat(user_id: int, mode: str):
     Возвращает chat с историей.
     Если чата нет — создаёт новый с system prompt.
     """
-    if user_id not in user_chats and user_id not in id :
+    if user_id not in user_chats and user_id not in Admins_IDs :
         history = [
             {
                 "role": "user",
@@ -40,7 +44,7 @@ def get_chat(user_id: int, mode: str):
         ]
         user_chats[user_id] = client.chats.create(history=history, model=MODEL)
 
-    if user_id not in user_chats and user_id in id:
+    if user_id not in user_chats and user_id in Admins_IDs:
         history = [
             {
                 "role": "user",
