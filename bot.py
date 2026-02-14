@@ -43,7 +43,12 @@ async def start(message: Message):
     user_context[message.from_user.id] = []
     await message.answer(
         "👋 Привет! Я ИИ-репетитор по математике.\n\n"
-        "✏️ Пришли текст задачи или 📷 фото задачи.",
+        "✏️ Пришли текст задачи или 📷 фото задачи."
+    )
+    await message.answer(
+        "👋 Добро пожаловать в главное меню\n\n"
+        "✏️ Меню находится в разработке.\n\n"
+        "😎Совсем скоро здесь может появиться что-то новое",
         
         reply_markup=menu.main_menu()
     )
@@ -51,7 +56,6 @@ async def start(message: Message):
 
 @dp.callback_query(F.data == '/settings')
 async def settings(callback: CallbackQuery):
-    await callback.answer()
     await callback.message.answer(
         '''Настройки бота⚙️''',
         reply_markup=menu.settings_menu())
@@ -61,6 +65,17 @@ async def settings(callback: CallbackQuery):
 async def reset_callback(callback: CallbackQuery):
     user_context[callback.from_user.id] = []
     await callback.answer("Чат самоуничтожился! Поздравляю!")
+
+
+@dp.callback_query(F.data == '/menu')
+async def menu_return(callback: CallbackQuery):
+    await callback.message.answer(
+        "👋 Привет! И добро пожаловать в главное меню\n\n"
+        "✏️ Меню находится в разработке.\n\n"
+        "😎Совсем скоро здесь может появиться что-то новое",
+        
+        reply_markup=menu.main_menu()
+    )
 
 
 @dp.message(F.photo)
