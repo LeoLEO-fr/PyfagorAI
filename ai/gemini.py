@@ -1,15 +1,14 @@
-import os
 from google import genai
 from google.genai.chats import Chat
 from google.genai.types import Part as P
-from config import GEMINI_API_KEY
+from config import GEMINI_API_KEY, id
 from ai.prompts import (
     BASE_PROMPT,
     MODE_PROMPTS,
     ADMIN_MODE
 )
 
-id = os.getenv("id")
+
 
 client = genai.Client(api_key=GEMINI_API_KEY)
 MODEL = "gemma-3-27b-it"
