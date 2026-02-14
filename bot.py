@@ -147,13 +147,15 @@ async def handle_text(message: Message):
             image_bytes=None,
             prompt=message.text
         )
-        await msg.delete()
-        await message.answer(answer, parse_mode="HTML")
 
         user_context[user_id].append({
             "role": "assistant",
             "text": answer
         })
+
+        await msg.delete()
+        await message.answer(answer, parse_mode="HTML")
+
     except ClientError as e:
         await msg.delete()
         code = e.code
@@ -167,7 +169,7 @@ async def handle_text(message: Message):
         else:
             await message.answer("❌ Ошибка при обработке запроса.")
 
-            
+
 
 async def healthcheck(request):
     return web.Response(text="Bot is alive")
