@@ -11,7 +11,7 @@ def main_menu():
 def subscribe():
     return InlineKeyboardMarkup(
         inline_keyboard=[
-            [InlineKeyboardButton(text="😎 Подтвердить покупку", callback_data="success", style="success")]
+            [InlineKeyboardButton(text="😎 Подтвердить покупку", callback_data="/success", style="success")]
             [InlineKeyboardButton(text="❌ Вернуть звёзды", callback_data="/return", style="danger")]
         ]
     )
