@@ -1,8 +1,9 @@
 from google.genai.errors import ClientError
 from aiogram import Bot, Dispatcher, F
-from aiogram.types import Message, CallbackQuery, BotCommand
+from aiogram.types import Message, CallbackQuery, BotCommand, LabeledPrice, PreCheckoutQuery
 from aiogram.filters import CommandStart, Command
 from aiohttp import web
+from aiogram.enums import ContentType
 import keyboards.menu as menu
 import ai.gemini as g
 import asyncio
@@ -12,6 +13,7 @@ from ai.gemini import gemini_image_chat
 
 from config import BOT_TOKEN, PORT
 
+PROVIDER_TOKEN = ""
 bot = Bot(BOT_TOKEN)
 dp = Dispatcher()
 
@@ -52,6 +54,47 @@ async def start(message: Message):
         
         reply_markup=menu.main_menu()
     )
+
+
+@dp.message(F.data == "/buy")
+async def subscribe(callback: CallbackQuery):
+    await callback.message.answer(
+        "❤️‍🔥 Если ты нажал кнопку, это значит, что ты хочешь подписку. \n\n"
+        """⚙️ С подпиской у тебя появляется возможность:
+        1. Получать объяснения на все предметы, в том числе университетского уровня
+        2. Получать анаиз своих ошибок
+        3. Получать рассписанную логику работы по шагам максимаоьно подробно
+        4. Решать задачи альтернативными методами. \n\n"""
+        "😏 Но ответов конечно мы тебе не дадим)",
+
+        reply_markup=menu.subscribe()
+    )
+
+
+@dp.message(F.data == "/success")
+async def success(message: Message):
+    prices = [LabeledPrice(label="Подписка", amount=100)]
+
+    await bot.send_invoice(
+        chat_id=message.chat.id,
+        title="Покупка подписки",
+        description="Доступ к PRO режиму",
+        payload="pro_subscription",
+        provider_token=PROVIDER_TOKEN,
+        currency="XTR",  # Stars валюта
+        prices=prices,
+    )
+
+
+@dp.pre_checkout_query()
+async def pre_checkout(pre_checkout_query: PreCheckoutQuery):
+    await bot.answer_pre_checkout_query(pre_checkout_query.id, ok=True)
+
+
+@dp.message(F.content_type == ContentType.SUCCESSFUL_PAYMENT)
+async def successful_payment(message: Message):
+    await message.answer("Оплата прошла успешно 🚀")
+
 
 
 @dp.callback_query(F.data == '/settings')
@@ -128,6 +171,7 @@ async def handle_photo(message: Message):
 @dp.message(F.text)
 async def handle_text(message: Message):
     user_id = message.from_user.id
+    print(CallbackQuery.message.chat.id)
     mode = get_settings(user_id)["mode"]
     if user_id not in user_context:
         user_context[user_id] = []

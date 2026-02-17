@@ -5,6 +5,14 @@ def main_menu():
         inline_keyboard=[
             [InlineKeyboardButton(text="⚙️ Настройки", callback_data="/settings", style="primary")],
             [InlineKeyboardButton(text="❌ Удалить контекст", callback_data="/reset", style="danger")]
+            [InlineKeyboardButton(text="💵 Купить подписку", callback_data="/buy", style="success")]
+        ]
+    )
+def subscribe():
+    return InlineKeyboardMarkup(
+        inline_keyboard=[
+            [InlineKeyboardButton(text="😎 Подтвердить покупку", callback_data="success", style="success")]
+            [InlineKeyboardButton(text="❌ Вернуть звёзды", callback_data="/return", style="danger")]
         ]
     )
 
@@ -17,12 +25,12 @@ def settings_menu():
         ]
     )
 
-def repeat():
-    return InlineKeyboardMarkup(
-        inline_keyboard=[
-            [InlineKeyboardButton(
-                text="Повторить последнее сообщение 🔁",
-                callback_data="repeat"
-            )]
-        ]
-    )
+# def repeat():
+#     return InlineKeyboardMarkup(
+#         inline_keyboard=[
+#             [InlineKeyboardButton(
+#                 text="Повторить последнее сообщение 🔁",
+#                 callback_data="repeat"
+#             )]
+#         ]
+#     )
