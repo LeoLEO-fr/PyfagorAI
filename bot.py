@@ -56,7 +56,7 @@ async def start(message: Message):
     )
 
 
-@dp.message(F.data == "/buy")
+@dp.callback_query(F.data == "/buy")
 async def subscribe(callback: CallbackQuery):
     await callback.message.answer(
         "❤️‍🔥 Если ты нажал кнопку, это значит, что ты хочешь подписку. \n\n"
@@ -71,9 +71,9 @@ async def subscribe(callback: CallbackQuery):
     )
 
 
-@dp.message(F.data == "/success")
+@dp.callback_query(F.data == "/success")
 async def success(message: Message):
-    prices = [LabeledPrice(label="Подписка", amount=100)]
+    prices = [LabeledPrice(label="Подписка", amount=0)]
 
     await bot.send_invoice(
         chat_id=message.chat.id,
