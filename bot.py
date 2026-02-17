@@ -72,11 +72,11 @@ async def subscribe(callback: CallbackQuery):
 
 
 @dp.callback_query(F.data == "/success")
-async def success(message: Message):
+async def success(callback: CallbackQuery):
     prices = [LabeledPrice(label="Подписка", amount=0)]
 
     await bot.send_invoice(
-        chat_id=message.chat.id,
+        chat_id=callback.message.chat.id,
         title="Покупка подписки",
         description="Доступ к PRO режиму",
         payload="pro_subscription",
@@ -84,6 +84,7 @@ async def success(message: Message):
         currency="XTR",  # Stars валюта
         prices=prices,
     )
+    await callback.answer()
 
 
 @dp.pre_checkout_query()
