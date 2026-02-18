@@ -4,6 +4,8 @@ from aiogram.types import Message, CallbackQuery, BotCommand, LabeledPrice, PreC
 from aiogram.filters import CommandStart, Command
 from aiohttp import web
 from aiogram.enums import ContentType
+from datetime import datetime, timedelta
+from basedata import add_subscriber
 import keyboards.menu as menu
 import ai.gemini as g
 import asyncio
@@ -17,6 +19,7 @@ PROVIDER_TOKEN = ""
 bot = Bot(BOT_TOKEN)
 dp = Dispatcher()
 
+now = datetime.now()
 
 user_settings = {}
 
@@ -73,7 +76,7 @@ async def subscribe(callback: CallbackQuery):
 
 @dp.callback_query(F.data == "/success")
 async def success(callback: CallbackQuery):
-    prices = [LabeledPrice(label="Подписка", amount=100)]
+    prices = [LabeledPrice(label="Подписка", amount=0)]
 
     await bot.send_invoice(
         chat_id=callback.message.chat.id,
@@ -95,6 +98,13 @@ async def pre_checkout(pre_checkout_query: PreCheckoutQuery):
 @dp.message(F.successful_payment)
 async def successful_payment(message: Message):
     await message.answer("Оплата прошла успешно 🚀")
+    user_id = CallbackQuery.from_user.id
+    subscribe_end = datetime.now() + timedelta(days=30)
+
+    await add_subscriber(user_id=user_id, subs=subscribe_end)
+
+    g.Admins_IDs[user_id] = subscribe_end
+
 
 
 
@@ -236,6 +246,7 @@ async def main():
     await run_web_server()
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)
+    await g.remove_expired_daily()
 
 
 if __name__ == "__main__":

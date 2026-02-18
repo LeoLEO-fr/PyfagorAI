@@ -146,6 +146,8 @@ venv.bak/
 
 # Payment
 payment.py
+basedata.py
+tabel.sql
 
 # Spyder project settings
 .spyderproject
