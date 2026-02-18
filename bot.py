@@ -73,7 +73,7 @@ async def subscribe(callback: CallbackQuery):
 
 @dp.callback_query(F.data == "/success")
 async def success(callback: CallbackQuery):
-    prices = [LabeledPrice(label="Подписка", amount=0)]
+    prices = [LabeledPrice(label="Подписка", amount=100)]
 
     await bot.send_invoice(
         chat_id=callback.message.chat.id,
@@ -92,7 +92,7 @@ async def pre_checkout(pre_checkout_query: PreCheckoutQuery):
     await bot.answer_pre_checkout_query(pre_checkout_query.id, ok=True)
 
 
-@dp.message(F.content_type == ContentType.SUCCESSFUL_PAYMENT)
+@dp.message(F.successful_payment)
 async def successful_payment(message: Message):
     await message.answer("Оплата прошла успешно 🚀")
 
