@@ -4,15 +4,15 @@ def main_menu():
     return InlineKeyboardMarkup(
         inline_keyboard=[
             [InlineKeyboardButton(text="⚙️ Настройки", callback_data="/settings", style="primary")],
-            [InlineKeyboardButton(text="❌ Удалить контекст", callback_data="/reset", style="danger")], 
-            [InlineKeyboardButton(text="💵 Купить подписку", callback_data="/buy", style="success")],
+            [InlineKeyboardButton(text="❌ Удалить контекст", callback_data="/reset", style="danger"), 
+            InlineKeyboardButton(text="💵 Купить подписку", callback_data="/buy", style="success")],
         ]
     )
 def subscribe():
     return InlineKeyboardMarkup(
         inline_keyboard=[
-            [InlineKeyboardButton(text="😎 Подтвердить покупку", callback_data="/success", style="success")],
-            [InlineKeyboardButton(text="❌ Вернуть звёзды", callback_data="/return", style="danger")],
+            [InlineKeyboardButton(text="😎 Подтвердить покупку", callback_data="/success", style="success"),
+            InlineKeyboardButton(text="❌ Вернуть звёзды", callback_data="/return", style="danger")],
         ]
     )
 
