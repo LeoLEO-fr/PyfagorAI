@@ -99,12 +99,10 @@ async def pre_checkout(pre_checkout_query: PreCheckoutQuery):
 async def successful_payment(message: Message):
     await message.answer("Оплата прошла успешно 🚀")
     user_id = CallbackQuery.from_user.id
-    subscribe_end = datetime.now() + timedelta(days=30)
 
-    await add_subscriber(user_id=user_id, subs=subscribe_end)
+    await add_subscriber(user_id=user_id)
 
-    g.Admins_IDs[user_id] = subscribe_end
-
+    g.Admins_IDs.append(user_id)
 
 
 
@@ -246,7 +244,6 @@ async def main():
     await run_web_server()
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)
-    await g.remove_expired_daily()
 
 
 if __name__ == "__main__":

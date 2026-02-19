@@ -1,6 +1,4 @@
 import asyncio
-from datetime import datetime, timedelta
-from bot import now
 from google import genai
 from google.genai.chats import Chat
 from google.genai.types import Part as P
@@ -12,26 +10,7 @@ from ai.prompts import (
 )
 
 
-Admins_IDs = {id:"never", id1:"never"}
-
-
-async def remove_expired_daily():
-    while True:
-        for user_id in list(Admins_IDs.keys()):
-            if Admins_IDs[user_id] <= now:
-                del Admins_IDs[user_id]
-                print(f"Пользователь {user_id} удалён, подписка закончилась")
-        print("Проверка завершена")
-        
-        # ждём 24 часа (24*60*60 секунд)
-        await asyncio.sleep(24 * 60 * 60)
-
-# пример запуска
-async def main():
-    # здесь можно добавлять новых пользователей
-    await remove_expired_daily()
-
-asyncio.run(main())
+Admins_IDs = [id,id1]
 
 
 
