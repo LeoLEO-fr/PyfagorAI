@@ -3,9 +3,6 @@ from aiogram import Bot, Dispatcher, F
 from aiogram.types import Message, CallbackQuery, BotCommand, LabeledPrice, PreCheckoutQuery
 from aiogram.filters import CommandStart, Command
 from aiohttp import web
-from aiogram.enums import ContentType
-from datetime import datetime, timedelta
-from basedata import add_subscriber
 import keyboards.menu as menu
 import ai.gemini as g
 import asyncio
@@ -19,7 +16,6 @@ PROVIDER_TOKEN = ""
 bot = Bot(BOT_TOKEN)
 dp = Dispatcher()
 
-now = datetime.now()
 
 user_settings = {}
 
@@ -74,7 +70,7 @@ async def subscribe(callback: CallbackQuery):
     )
 
 
-@dp.callback_query(F.data == "/success")
+@dp.message(F.data == "/success")
 async def success(callback: CallbackQuery):
     prices = [LabeledPrice(label="Подписка", amount=0)]
 
@@ -84,7 +80,7 @@ async def success(callback: CallbackQuery):
         description="Доступ к PRO режиму",
         payload="pro_subscription",
         provider_token=PROVIDER_TOKEN,
-        currency="XTR",  # Stars валюта
+        currency="XTR",  
         prices=prices,
     )
     await callback.answer()
@@ -99,8 +95,6 @@ async def pre_checkout(pre_checkout_query: PreCheckoutQuery):
 async def successful_payment(message: Message):
     await message.answer("Оплата прошла успешно 🚀")
     user_id = CallbackQuery.from_user.id
-
-    await add_subscriber(user_id=user_id)
 
     g.Admins_IDs.append(user_id)
 
@@ -134,11 +128,10 @@ async def menu_return(callback: CallbackQuery):
 async def handle_photo(message: Message):
     user_id = message.from_user.id
     mode = get_settings(user_id)["mode"]
-    # Инициализация контекста
     if user_id not in user_context:
         user_context[user_id] = []
 
-    photo = message.photo[-1]  # самое качественное фото
+    photo = message.photo[-1]  
     file = await bot.get_file(photo.file_id)
 
     image_bytes = await bot.download(file)
