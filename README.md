@@ -20,16 +20,6 @@
 - Aiohttp (для healthcheck)
 - Telegram Bot API (интеграция платежей)
 
-📁 Структура проекта
-.
-├── main.py                 # Основной файл бота
-├── config.py               # Конфигурация (токены, порт)
-├── keyboards/
-│   └── menu.py            # Клавиатуры и меню
-├── ai/
-│   └── gemini.py          # Логика работы с Gemini AI
-└── requirements.txt       # Зависимости
-
 🎮 Команды бота
 
 · /start — Начало работы, приветствие
