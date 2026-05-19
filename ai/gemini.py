@@ -15,7 +15,7 @@ Admins_IDs = [id,id1]
 
 
 client = genai.Client(api_key=GEMINI_API_KEY)
-MODEL = "gemma-3-27b-it"
+MODEL = "gemini-3.1-flash-lite"
 
 
 

@@ -55,48 +55,7 @@ async def start(message: Message):
     )
 
 
-@dp.callback_query(F.data == "/buy")
-async def subscribe(callback: CallbackQuery):
-    await callback.message.answer(
-        "❤️‍🔥 Если ты нажал кнопку, это значит, что ты хочешь подписку. \n\n"
-        """⚙️ С подпиской у тебя появляется возможность:
-        1. Получать объяснения на все предметы, в том числе университетского уровня
-        2. Получать анаиз своих ошибок
-        3. Получать рассписанную логику работы по шагам максимально подробно
-        4. Решать задачи альтернативными методами. \n\n"""
-        "😏 Но ответов конечно мы тебе не дадим)",
 
-        reply_markup=menu.subscribe()
-    )
-
-
-@dp.message(F.data == "/success")
-async def success(callback: CallbackQuery):
-    prices = [LabeledPrice(label="Подписка", amount=0)]
-
-    await bot.send_invoice(
-        chat_id=callback.message.chat.id,
-        title="Покупка подписки",
-        description="Доступ к PRO режиму",
-        payload="pro_subscription",
-        provider_token=PROVIDER_TOKEN,
-        currency="XTR",  
-        prices=prices,
-    )
-    await callback.answer()
-
-
-@dp.pre_checkout_query()
-async def pre_checkout(pre_checkout_query: PreCheckoutQuery):
-    await bot.answer_pre_checkout_query(pre_checkout_query.id, ok=True)
-
-
-@dp.message(F.successful_payment)
-async def successful_payment(message: Message):
-    await message.answer("Оплата прошла успешно 🚀")
-    user_id = CallbackQuery.from_user.id
-
-    g.Admins_IDs.append(user_id)
 
 
 
